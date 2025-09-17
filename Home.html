@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Doctor Portal — Home</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background: linear-gradient(135deg, #2c5282, #1a365d);
+      min-height: 100vh;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .header {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      z-index: 100;
+    }
+    
+    .logo h1 {
+      color: #1a365d;
+      font-size: 24px;
+      font-weight: 700;
+    }
+    
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    .user-name {
+      font-weight: 500;
+      color: #333;
+    }
+    
+    .btn {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .btn-danger { background: #e53935; color: #fff; }
+    .btn-danger:hover { background: #c62828; }
+    .btn-primary { background: #2c5282; color: #fff; }
+    .btn-primary:hover { background: #274d77; }
+    .btn-success { background: #2e7d32; color: #fff; }
+    .btn-success:hover { background: #256428; }
+    .btn-secondary { background: #546e7a; color: #fff; }
+    .btn-secondary:hover { background: #455a64; }
+    
+    .main-container {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+    
+    .sidebar {
+      width: 24%;
+      min-width: 260px;
+      background: rgba(255, 255, 255, 0.95);
+      box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+      padding: 20px 0;
+      overflow-y: auto;
+    }
+    
+    .nav-list { list-style: none; }
+    .nav-item { margin-bottom: 5px; }
+    .nav-link {
+      display: block;
+      padding: 15px 25px;
+      color: #1a365d;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s;
+      border-left: 4px solid transparent;
+    }
+    .nav-link:hover, .nav-link.active {
+      background: rgba(44, 82, 130, 0.1);
+      border-left: 4px solid #2c5282;
+    }
+    
+    .content { flex: 1; padding: 30px; overflow-y: auto; }
+    .section { display: none; }
+    .section.active { display: block; }
+    
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+    
+    .card {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 14px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      overflow: hidden;
+    }
+    .card-header { background: linear-gradient(135deg, #2c5282, #1a365d); color: #fff; padding: 14px 18px; font-weight: 600; }
+    .card-body { padding: 18px; }
+    
+    .stat-value { font-size: 26px; font-weight: 700; color: #2c5282; }
+    .stat-label { color: #666; margin-top: 6px; font-size: 13px; }
+    
+    .patient-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #eee; }
+    .patient-row:last-child { border-bottom: none; }
+    .patient-name { font-weight: 600; color: #1a365d; }
+    .patient-meta { color: #555; font-size: 13px; }
+    
+    .current-box {
+      background: #f1f8ff;
+      border: 1px solid #cfe2ff;
+      border-radius: 10px;
+      padding: 16px;
+    }
+    .current-actions { display: flex; gap: 10px; margin-top: 12px; }
+    
+    .form-group { margin-bottom: 12px; }
+    .form-label { display: block; margin-bottom: 6px; font-weight: 500; }
+    .form-control { width: 100%; padding: 10px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; }
+    
+    .notification {
+      position: fixed; top: 20px; right: 20px; background: #2e7d32; color: #fff; padding: 12px 16px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); transform: translateX(150%); transition: transform .3s; z-index: 1000;
+    }
+    .notification.show { transform: translateX(0); }
+  </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+</head>
+<body>
+  <div class="header">
+    <div class="logo">
+      <h1>Doctor Portal</h1>
+    </div>
+    <div class="user-info">
+      <span class="user-name">Dr. Demo</span>
+      <button class="btn btn-danger" onclick="logout()">Logout</button>
+    </div>
+  </div>
+  
+  <div class="main-container">
+    <nav class="sidebar">
+      <ul class="nav-list">
+        <li class="nav-item"><a href="#" class="nav-link active" data-section="home">Home</a></li>
+        <li class="nav-item"><a href="#" class="nav-link" data-section="queue">Appointments Queue</a></li>
+        <li class="nav-item"><a href="OnlineQueue.html" class="nav-link">Online Queue</a></li>
+        <li class="nav-item"><a href="OfflineQueue.html" class="nav-link">Offline Queue</a></li>
+        <li class="nav-item"><a href="Appointments.html" class="nav-link">Manage Appointments</a></li>
+        <li class="nav-item"><a href="#" class="nav-link" data-section="completed">Completed Consultations</a></li>
+      </ul>
+    </nav>
+    
+    <div class="content">
+      <div id="home" class="section active">
+        <div class="grid" style="margin-bottom: 20px;">
+          <div class="card"><div class="card-header">Today's Consultations</div><div class="card-body"><div class="stat-value" id="statTotal">0</div><div class="stat-label">Total booked</div></div></div>
+          <div class="card"><div class="card-header">Completed</div><div class="card-body"><div class="stat-value" id="statCompleted">0</div><div class="stat-label">Finished today</div></div></div>
+          <div class="card"><div class="card-header">Pending</div><div class="card-body"><div class="stat-value" id="statPending">0</div><div class="stat-label">Awaiting consultation</div></div></div>
+          <div class="card"><div class="card-header">Next Appointment</div><div class="card-body"><div class="stat-value" id="statNext">—</div><div class="stat-label">Scheduled time</div></div></div>
+        </div>
+        
+        <div class="card">
+          <div class="card-header">Current Patient</div>
+          <div class="card-body">
+            <div id="currentPatientBox" class="current-box"></div>
+            <div class="current-actions">
+              <button id="btnStartConsult" class="btn btn-primary">Start Consultation</button>
+              <button id="btnVoiceCall" class="btn btn-secondary">Call</button>
+              <button id="btnVideoCall" class="btn btn-success">Video Call</button>
+            </div>
+            <div id="consultFormWrap" style="margin-top:16px; display:none;">
+              <div class="card">
+                <div class="card-header">Consultation Summary & Prescription</div>
+                <div class="card-body">
+                  <form id="consultForm">
+                    <div class="form-group">
+                      <label class="form-label" for="diagnosis">Diagnosis</label>
+                      <input id="diagnosis" class="form-control" placeholder="Enter diagnosis" required>
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label" for="notes">Notes</label>
+                      <textarea id="notes" class="form-control" rows="3" placeholder="Key findings"></textarea>
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label" for="prescription">Prescription</label>
+                      <textarea id="prescription" class="form-control" rows="3" placeholder="e.g., Tab Paracetamol 500mg, 1-0-1, 5 days" required></textarea>
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label" for="followup">Follow-up Date (optional)</label>
+                      <input id="followup" type="date" class="form-control">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit & Move Next</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div id="queue" class="section">
+        <div class="card">
+          <div class="card-header">Upcoming Patients (Queue)</div>
+          <div class="card-body" id="upcomingList"></div>
+        </div>
+      </div>
+      
+      <div id="completed" class="section">
+        <div class="card">
+          <div class="card-header">Completed Consultations (Today)</div>
+          <div class="card-body" id="completedList"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div id="notification" class="notification"></div>
+  
+  <!-- Call Overlay -->
+  <div id="callOverlay" style="position:fixed; inset:0; background:rgba(0,0,0,0.75); display:none; align-items:center; justify-content:center; z-index:2000;">
+    <div style="width:90%; max-width:900px; background:#111827; color:#fff; border-radius:12px; overflow:hidden; box-shadow:0 10px 30px rgba(0,0,0,0.4);">
+      <div style="padding:12px 16px; background:#0f172a; display:flex; align-items:center; justify-content:space-between;">
+        <div id="callTitle" style="font-weight:600;">Call in Progress</div>
+        <div id="callTimer" style="opacity:0.85; font-variant-numeric: tabular-nums;">00:00</div>
+      </div>
+      <div id="videoWrap" style="background:#000; display:flex; align-items:center; justify-content:center; min-height:360px;">
+        <video id="localVideo" autoplay playsinline muted style="max-width:100%; max-height:70vh; border-radius:8px;"></video>
+        <audio id="localAudio" autoplay style="display:none;"></audio>
+      </div>
+      <div style="padding:12px; display:flex; gap:10px; justify-content:center; background:#0f172a;">
+        <button id="btnMute" class="btn btn-secondary">Mute</button>
+        <button id="btnToggleVideo" class="btn btn-secondary">Video Off</button>
+        <button id="btnEndCall" class="btn btn-danger">End Call</button>
+      </div>
+    </div>
+  </div>
+  
+  <script src="scripts/home.js"></script>
+  <script>
+    // Demo bootstrap so Home renders even if opened directly
+    (function() {
+      if (!localStorage.getItem('doctor_logged_in')) {
+        localStorage.setItem('doctor_logged_in', 'true');
+      }
+      if (!localStorage.getItem('doctor_queue')) {
+        const d = new Date().toISOString().split('T')[0];
+        localStorage.setItem('doctor_queue', JSON.stringify({
+          currentPatient: { id: 'PX001', name: 'Demo Patient', age: 30, gender: 'Male', reason: 'General checkup', appointmentTime: d + ' 09:30', vitals: { temp: '98.6°F', pulse: 76, bp: '118/76' } },
+          upcoming: [
+            { id: 'PX002', name: 'Jane', age: 26, gender: 'Female', reason: 'Cough', appointmentTime: d + ' 09:50', mode: 'online' },
+            { id: 'PX003', name: 'Rahul', age: 40, gender: 'Male', reason: 'BP follow-up', appointmentTime: d + ' 10:10', mode: 'offline' }
+          ],
+          completed: []
+        }));
+      }
+      // Force initial render
+      if (typeof renderStatsAndCurrent === 'function') {
+        renderStatsAndCurrent();
+      }
+      if (typeof renderUpcoming === 'function') {
+        renderUpcoming();
+      }
+      if (typeof renderCompleted === 'function') {
+        renderCompleted();
+      }
+    })();
+  </script>
+  
+</body>
+</html>

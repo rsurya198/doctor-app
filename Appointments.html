@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Doctor Portal — Appointments</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    body { background: #f3f6fb; color: #333; min-height: 100vh; }
+    .wrap { max-width: 1080px; margin: 0 auto; padding: 24px; }
+    .header { display:flex; align-items:center; justify-content:space-between; margin-bottom: 18px; }
+    .header a { text-decoration:none; color:#2c5282; font-weight:600; }
+    .card { background:#fff; border-radius:12px; box-shadow:0 8px 20px rgba(0,0,0,0.08); overflow:hidden; margin-bottom:18px; }
+    .card-header { background:linear-gradient(135deg,#2c5282,#1a365d); color:#fff; padding:14px 18px; font-weight:600; }
+    .card-body { padding:18px; }
+    .grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap:16px; }
+    .form-group { margin-bottom:12px; }
+    .form-label { display:block; margin-bottom:6px; font-weight:500; }
+    .form-control { width:100%; padding:10px 12px; border:1px solid #ddd; border-radius:6px; font-size:14px; }
+    .btn { padding:10px 14px; border:none; border-radius:6px; font-weight:600; cursor:pointer; }
+    .btn-primary { background:#2c5282; color:#fff; }
+    .btn-primary:hover { background:#274d77; }
+    .appt-row { display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #eee; }
+    .appt-row:last-child { border-bottom:none; }
+    .meta { color:#555; font-size:13px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="header">
+      <h2>Appointments</h2>
+      <a href="Home.html">← Back to Home</a>
+    </div>
+
+    <div class="card">
+      <div class="card-header">Create Appointment</div>
+      <div class="card-body">
+        <form id="createApptForm">
+          <div class="grid">
+            <div class="form-group">
+              <label class="form-label" for="apptName">Patient Name</label>
+              <input id="apptName" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="apptAge">Age</label>
+              <input id="apptAge" type="number" class="form-control" min="0" placeholder="e.g., 32">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="apptGender">Gender</label>
+              <select id="apptGender" class="form-control">
+                <option>Male</option>
+                <option>Female</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="apptReason">Reason</label>
+              <input id="apptReason" class="form-control" required placeholder="e.g., Follow-up for BP">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="apptTime">Time</label>
+              <input id="apptTime" type="datetime-local" class="form-control" required>
+            </div>
+          </div>
+          <div style="margin-top:10px;"><button class="btn btn-primary" type="submit">Create</button></div>
+        </form>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">All Appointments</div>
+      <div class="card-body" id="appointmentsList"></div>
+    </div>
+  </div>
+
+  <script src="scripts/appointments.js"></script>
+</body>
+</html>

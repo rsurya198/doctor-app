@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Doctor Portal — Offline Queue</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    body { background:#f9fafb; color:#333; min-height:100vh; }
+    .wrap { max-width:1080px; margin:0 auto; padding:24px; }
+    .header { display:flex; align-items:center; justify-content:space-between; margin-bottom:18px; }
+    .header a { text-decoration:none; color:#2c5282; font-weight:600; }
+    .card { background:#fff; border-radius:12px; box-shadow:0 8px 20px rgba(0,0,0,0.08); overflow:hidden; }
+    .card-header { background:linear-gradient(135deg,#2c5282,#1a365d); color:#fff; padding:14px 18px; font-weight:600; }
+    .card-body { padding:18px; }
+    .row { display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #eee; }
+    .row:last-child { border-bottom:none; }
+    .name { font-weight:600; color:#1a365d; }
+    .meta { color:#555; font-size:13px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="header">
+      <h2>Offline Queue</h2>
+      <a href="Home.html">← Back to Home</a>
+    </div>
+
+    <div class="card">
+      <div class="card-header">Walk-in Patients</div>
+      <div class="card-body" id="offlineList"></div>
+    </div>
+  </div>
+
+  <script>
+    function loadOffline() {
+      const q = JSON.parse(localStorage.getItem('doctor_queue') || '{}');
+      const list = (q.upcoming || []).filter(x => (x.mode || 'online') === 'offline');
+      const el = document.getElementById('offlineList');
+      if (!list.length) { el.innerHTML = '<div class="meta">No offline patients right now.</div>'; return; }
+      el.innerHTML = '';
+      list.forEach(p => {
+        const row = document.createElement('div');
+        row.className = 'row';
+        row.innerHTML = `
+          <div>
+            <div class="name">${p.name} (${p.gender}, ${p.age})</div>
+            <div class="meta">${p.reason}</div>
+          </div>
+          <div class="meta">${p.appointmentTime}</div>
+        `;
+        el.appendChild(row);
+      });
+    }
+    loadOffline();
+  </script>
+</body>
+</html>
